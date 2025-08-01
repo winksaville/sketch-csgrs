@@ -2,10 +2,32 @@
 
 Learn sketching in csgrs
 
-## Install
+
+## Building
+
+Currently requires csgrs source code at "../csgrs".
+
+## Running
+
+NaN's can be passed as "NaN" no quotes on the command line.
 
 ```
-cargo install --path .
+$ cargo run -- -h
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running `target/debug/sketch-csgrs -h`
+sketch-csgrs:+
+Create one or more cubes with an optional tube in the center
+
+Usage: sketch-csgrs [OPTIONS] <WIDTH> <HEIGHT>
+
+Arguments:
+  <WIDTH>   
+  <HEIGHT>  
+
+Options:
+  -p, --print-mesh  Enable printing Mesh
+  -h, --help        Print help
+  -V, --version     Print version
 ```
 
 ## License
