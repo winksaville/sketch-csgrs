@@ -1,11 +1,42 @@
 //! sketch-csgrs
 use clap::Parser;
 use csgrs::{float_types::Real, sketch::Sketch};
+use serde::Serialize;
+
+#[derive( clap::ValueEnum, Clone, Default, Debug, Serialize,)]
+#[serde(rename_all = "kebab-case")]
+enum SketchCommand {
+    #[default]
+    Square,
+}
 
 #[derive(Parser, Debug)]
 #[clap(name = env!("CARGO_PKG_NAME"), version = env!("CARGO_PKG_VERSION"), author = env!("CARGO_PKG_AUTHORS"), about = env!("CARGO_PKG_DESCRIPTION"))]
 struct Args {
+    cmd: SketchCommand,
+
+    #[arg(
+        short,
+        long,
+        default_value = "1",
+        help = "Length of object (x direction)"
+    )]
+    length: Real,
+
+    #[arg(
+        short,
+        long,
+        default_value = "1",
+        help = "Width of object (y direction)"
+    )]
     width: Real,
+
+    #[arg(
+        short='t',
+        long,
+        default_value = "10",
+        help = "Height of object (z direction)"
+    )]
     height: Real,
 
     #[arg(
@@ -17,25 +48,37 @@ struct Args {
     print_mesh: bool,
 }
 
-fn main() {
-    println!("sketch-csgrs:+");
-
-    // Parse command line arguments
-    let args = Args::parse();
+fn square_rod(args: &Args) {
+    println!("square_rod:+");
 
     // Create a square
     let width: Real = args.width;
     let height = args.height;
     let square_sketch: Sketch<()> = Sketch::square(width, None);
-    let square = square_sketch.extrude(height);
+    let square_rod = square_sketch.extrude(height);
     if args.print_mesh {
-        println!("square Mesh: {square:?}");
+        println!("square_rod Mesh: {square_rod:?}");
     }
 
     // Save the mesh as an STL file
-    let name = "extrude_square";
-    let square_stl = square.to_stl_ascii(name);
+    let name = "square_rod";
+    let square_stl = square_rod.to_stl_ascii(name);
     std::fs::write(name.to_owned() + ".stl", square_stl).unwrap();
 
-    println!("sketch-csgrs:-");
+    println!("square_rod:-");
+}
+
+fn main() {
+    println!("main:+");
+
+    // Parse command line arguments
+    let args = Args::parse();
+
+    match args.cmd {
+        SketchCommand::Square => {
+            square_rod(&args);
+        }
+    }   
+
+    println!("main:-");
 }

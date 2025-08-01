@@ -6,6 +6,7 @@ description = "Create one or more cubes with an optional tube in the center"
 
 [dependencies]
 clap = { version = "4.5.32", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
 
 [dependencies.csgrs]
 default-features = false
